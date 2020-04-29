@@ -21,7 +21,7 @@
     "express-validator": "^6.4.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.10",
-    "shortid": "^2.2.15"
+    "uuid": "^7.0.3"
   },
   "devDependencies": {
     "concurrently": "^5.1.0",
