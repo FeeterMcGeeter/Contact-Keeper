@@ -1,6 +1,6 @@
-import React, { Fragment, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Fragment, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import AuthContext from '../../context/auth/authContext';
 import ContactContext from '../../context/contact/contactContext';
 
@@ -8,8 +8,13 @@ const Navbar = ({ title, icon }) => {
     const authContext = useContext(AuthContext);
     const contactContext = useContext(ContactContext);
 
-    const { isAuthenticated, logout, user } = authContext;
+    const { isAuthenticated, logout, user, loadUser } = authContext;
     const { clearContacts } = contactContext;
+
+    useEffect(() => {
+        loadUser();
+        // eslint-disable-next-line
+    }, []);
 
     const onLogout = () => {
         logout();
@@ -18,11 +23,11 @@ const Navbar = ({ title, icon }) => {
 
     const authLinks = (
         <Fragment>
-            <li>Hello { user && user.name }</li>
+            <li>Hello {user && user.name}</li>
             <li>
-                <a href="#!" onClick={onLogout}>
-                    <i className="fas fa-sign-out-alt"></i> 
-                    <span className="hide-sm"> Logout</span>
+                <a onClick={onLogout} href='#!'>
+                    <i className='fas fa-sign-out-alt' />{' '}
+                    <span className='hide-sm'>Logout</span>
                 </a>
             </li>
         </Fragment>
@@ -42,13 +47,13 @@ const Navbar = ({ title, icon }) => {
     return (
         <div className='navbar bg-primary'>
             <h1>
-                <i className={icon} /> {title}
+                <Link to='/'>
+                    <i className={icon} /> {title}
+                </Link>
             </h1>
-            <ul>
-                {isAuthenticated ? authLinks : guestLinks}
-            </ul>
+            <ul>{isAuthenticated ? authLinks : guestLinks}</ul>
         </div>
-    )
+    );
 };
 
 Navbar.propTypes = {
@@ -58,7 +63,7 @@ Navbar.propTypes = {
 
 Navbar.defaultProps = {
     title: 'Contact Keeper',
-    icon: 'fas fa-id-card-alt'
+    icon: 'fas fa-id-card-alt',
 };
 
 export default Navbar;
